@@ -1,7 +1,9 @@
 package com.example.imagetopdf_app.presentation
 
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,19 +17,26 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PdfScreen() {
+fun PdfScreen(
+    viewModel: PdfScreenViewModel,
+    onSelected: (PdfScreenEvent) -> Unit
+) {
 
     val pickImage = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
-    ) {uri ->
-
-
+    ) { uri ->
+        if (uri != null) {
+            onSelected(PdfScreenEvent.ImageSelected(uri))
+        }else{
+            Log.d("pokemon", "User didn't selected any Image")
+        }
     }
 
     Scaffold(
@@ -55,15 +64,18 @@ fun PdfScreen() {
                 )
             }
         }
-    ){ paddingValues ->
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-
-
-
+            viewModel.image?.let {image ->
+               Image(
+                   bitmap = image.asImageBitmap(),
+                   contentDescription = null
+               )
+            }
         }
     }
 
