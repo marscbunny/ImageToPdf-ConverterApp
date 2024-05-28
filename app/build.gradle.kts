@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     kotlin("plugin.serialization") version "1.9.23"
+    kotlin("kapt")
+    alias(libs.plugins.daggerHiltAndroid)
+
 }
 
 android {
@@ -73,4 +76,8 @@ dependencies {
 
     implementation("androidx.navigation:navigation-compose:2.8.0-alpha08")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+
+    //Dagger Hilt
+    implementation(libs.dagger.hilt)
+    kapt(libs.dagger.hilt.compiler)
 }

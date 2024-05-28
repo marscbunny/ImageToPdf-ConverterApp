@@ -7,11 +7,13 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
-import com.example.imagetopdf_app.domain.nvgaph.NavGraph
-import com.example.imagetopdf_app.domain.nvgaph.Route
+import com.example.imagetopdf_app.presentation.nvgaph.NavGraph
+import com.example.imagetopdf_app.presentation.nvgaph.Route
 import com.example.imagetopdf_app.ui.theme.ImageToPdfAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
