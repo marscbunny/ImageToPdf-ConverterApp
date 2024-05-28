@@ -4,11 +4,17 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -16,10 +22,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -34,7 +44,7 @@ fun PdfScreen(
     ) { uri ->
         if (uri != null) {
             onSelected(PdfScreenEvent.ImageSelected(uri))
-        }else{
+        } else {
             Log.d("pokemon", "User didn't selected any Image")
         }
     }
@@ -68,13 +78,28 @@ fun PdfScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            viewModel.image?.let {image ->
-               Image(
-                   bitmap = image.asImageBitmap(),
-                   contentDescription = null
-               )
+            viewModel.image?.let { image ->
+                Image(
+                    bitmap = image.asImageBitmap(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .size(300.dp)
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(
+                    onClick = {
+
+                    },
+                    shape = RectangleShape,
+                ) {
+                    Text(text = "Convert")
+
+                }
             }
         }
     }
@@ -83,26 +108,3 @@ fun PdfScreen(
 }
 
 
-/**
- * import android.graphics.BitmapFactory
- * import androidx.compose.runtime.Composable
- * import androidx.compose.runtime.remember
- * import java.io.FileNotFoundException
- *
- * @Composable
- * fun GetImageBitmap(uri: Uri): Bitmap? {
- *   val context = LocalContext.current
- *   return remember(uri) {
- *     try {
- *       val inputStream = context.contentResolver.openInputStream(uri)
- *       val bitmap = BitmapFactory.decodeStream(inputStream)
- *       inputStream?.close()
- *       bitmap
- *     } catch (e: FileNotFoundException) {
- *       // Handle file not found exception
- *       null
- *     }
- *   }
- * }
- *
- */
