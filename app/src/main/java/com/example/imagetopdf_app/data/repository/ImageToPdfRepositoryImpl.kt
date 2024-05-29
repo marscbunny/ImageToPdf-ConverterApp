@@ -37,24 +37,25 @@ class ImageToPdfRepositoryImpl(
         if (!docsFolder.exists()) {
             docsFolder.mkdir()
         }
+        val timeInMills = System.currentTimeMillis()
+        val file = File(docsFolder.absoluteFile, "$timeInMills.pdf")
 
         val pdfDocument = PdfDocument()
-        val pageInfo = PdfDocument.PageInfo.Builder(300, 600, 1).create()
+        val pageInfo = PdfDocument.PageInfo.Builder(bitmap.width, bitmap.height, 1).create()
         val page = pdfDocument.startPage(pageInfo)
         val canvas = page.canvas
 
         val paint = Paint()
-        canvas.drawBitmap(bitmap, 10f, 10f, paint)
+        canvas.drawBitmap(bitmap, 0f, 0f, paint)
         pdfDocument.finishPage(page)
-        val timeInMills = System.currentTimeMillis()
-        val file = File(docsFolder.absoluteFile,"$timeInMills.pdf")
         pdfDocument.writeTo(FileOutputStream(file))
         pdfDocument.close()
 
-        Toast.makeText(context,"pdf created successfully",Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "pdf created successfully", Toast.LENGTH_LONG).show()
 
 
     }
+
 
 
 }
