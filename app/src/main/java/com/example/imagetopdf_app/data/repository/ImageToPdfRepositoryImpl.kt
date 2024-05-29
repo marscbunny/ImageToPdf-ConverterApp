@@ -8,6 +8,7 @@ import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
+import androidx.core.net.toUri
 import com.example.imagetopdf_app.domain.repository.ImageToPdfRepository
 import java.io.File
 import java.io.FileOutputStream
@@ -56,6 +57,17 @@ class ImageToPdfRepositoryImpl(
 
     }
 
+    override fun getAllPdf(): List<Uri> {
+        val folder = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString())
+        val list = mutableListOf<Uri>()
+        if (folder.exists()){
+            val files = folder.listFiles()
+            for (file in files){
+                list.add(file.toUri())
+            }
+        }
+        return list
+    }
 
 
 }

@@ -8,4 +8,7 @@ sealed class Route{
 
     @Serializable
     object PdfScreen : Route()
+
+    @Serializable
+    object AddPdfScreen : Route()
 }
