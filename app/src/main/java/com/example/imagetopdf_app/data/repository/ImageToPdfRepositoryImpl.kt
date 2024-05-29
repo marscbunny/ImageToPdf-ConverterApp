@@ -34,7 +34,7 @@ class ImageToPdfRepositoryImpl(
 
     override fun convertImageToPdf(bitmap: Bitmap) {
         val docsFolder =
-            File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString())
+            File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString())
         if (!docsFolder.exists()) {
             docsFolder.mkdir()
         }

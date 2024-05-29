@@ -1,6 +1,7 @@
 package com.example.imagetopdf_app.presentation
 
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -15,9 +16,14 @@ class PdfViewModel @Inject constructor(
 ): ViewModel(){
 
 
-
     var image by mutableStateOf<Bitmap?>(null)
 
+    val list = mutableListOf<Uri>()
+
+
+    init {
+        list += imageToPdfRepository.getAllPdf()
+    }
 
 
     fun onEvent(event : PdfScreenEvent){

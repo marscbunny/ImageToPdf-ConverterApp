@@ -29,7 +29,8 @@ fun NavGraph(
             PdfScreen(
                 onClick = {
                     navController.navigate(Route.AddPdfScreen)
-                }
+                },
+                viewModel = viewModel
             )
         }
 
