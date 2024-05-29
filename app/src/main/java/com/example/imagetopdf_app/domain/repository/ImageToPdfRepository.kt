@@ -8,4 +8,6 @@ interface ImageToPdfRepository{
 
     fun convertUriToBitmap(uri : Uri) : Bitmap?
 
+    fun convertImageToPdf(bitmap: Bitmap)
+
 }
