@@ -28,7 +28,8 @@ fun NavGraph(
         composable<Route.PdfScreen> {
           PdfScreen(
               viewModel = viewModel,
-              onSelected = viewModel::onEvent
+              onSelected = viewModel::onEvent,
+              onCovertClick = viewModel::onEvent
           )
         }
 

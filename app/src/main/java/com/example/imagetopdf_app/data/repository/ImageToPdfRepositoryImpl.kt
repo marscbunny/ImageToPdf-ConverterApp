@@ -3,12 +3,14 @@ package com.example.imagetopdf_app.data.repository
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.os.Environment
-import androidx.compose.ui.graphics.Paint
+import android.widget.Toast
 import com.example.imagetopdf_app.domain.repository.ImageToPdfRepository
 import java.io.File
+import java.io.FileOutputStream
 
 
 class ImageToPdfRepositoryImpl(
@@ -30,18 +32,26 @@ class ImageToPdfRepositoryImpl(
     }
 
     override fun convertImageToPdf(bitmap: Bitmap) {
-        val docsFolder = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString())
-        if (!docsFolder.exists()){
+        val docsFolder =
+            File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString())
+        if (!docsFolder.exists()) {
             docsFolder.mkdir()
         }
 
         val pdfDocument = PdfDocument()
-        val pageInfo = PdfDocument.PageInfo.Builder(300,600,1).create()
+        val pageInfo = PdfDocument.PageInfo.Builder(300, 600, 1).create()
         val page = pdfDocument.startPage(pageInfo)
         val canvas = page.canvas
 
         val paint = Paint()
+        canvas.drawBitmap(bitmap, 10f, 10f, paint)
+        pdfDocument.finishPage(page)
+        val timeInMills = System.currentTimeMillis()
+        val file = File(docsFolder.absoluteFile,"$timeInMills.pdf")
+        pdfDocument.writeTo(FileOutputStream(file))
+        pdfDocument.close()
 
+        Toast.makeText(context,"pdf created successfully",Toast.LENGTH_LONG).show()
 
 
     }

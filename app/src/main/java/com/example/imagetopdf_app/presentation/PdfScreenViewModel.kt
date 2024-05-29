@@ -27,6 +27,10 @@ class PdfScreenViewModel @Inject constructor(
                 val bitmap = imageToPdfRepository.convertUriToBitmap(event.uri)
                 image = bitmap
             }
+
+            is PdfScreenEvent.ConvertImageToPdf -> {
+                imageToPdfRepository.convertImageToPdf(event.bitmap)
+            }
         }
     }
 

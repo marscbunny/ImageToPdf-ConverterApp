@@ -36,7 +36,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun PdfScreen(
     viewModel: PdfScreenViewModel,
-    onSelected: (PdfScreenEvent) -> Unit
+    onSelected: (PdfScreenEvent) -> Unit,
+    onCovertClick : (PdfScreenEvent) -> Unit
 ) {
 
     val pickImage = rememberLauncherForActivityResult(
@@ -93,7 +94,7 @@ fun PdfScreen(
                 Spacer(modifier = Modifier.height(20.dp))
                 Button(
                     onClick = {
-
+                              onCovertClick(PdfScreenEvent.ConvertImageToPdf(image))
                     },
                     shape = RectangleShape,
                 ) {
