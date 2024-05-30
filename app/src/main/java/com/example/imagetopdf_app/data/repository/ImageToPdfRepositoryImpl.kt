@@ -1,5 +1,6 @@
 package com.example.imagetopdf_app.data.repository
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -8,6 +9,7 @@ import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.os.Environment
 import android.widget.Toast
+import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import com.example.imagetopdf_app.domain.repository.ImageToPdfRepository
 import java.io.File
@@ -34,7 +36,7 @@ class ImageToPdfRepositoryImpl(
 
     override fun convertImageToPdf(bitmap: Bitmap) {
         val docsFolder =
-            File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString())
+            File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString())
         if (!docsFolder.exists()) {
             docsFolder.mkdir()
         }
@@ -57,13 +59,15 @@ class ImageToPdfRepositoryImpl(
 
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun getAllPdf(): List<Uri> {
         val folder = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString())
         val list = mutableListOf<Uri>()
         if (folder.exists()){
             val files = folder.listFiles()
             for (file in files){
-                list.add(file.toUri())
+            val check = FileProvider.getUriForFile(context,"com.example.imagetopdf_app",file)
+                list.add(check)
             }
         }
         return list
