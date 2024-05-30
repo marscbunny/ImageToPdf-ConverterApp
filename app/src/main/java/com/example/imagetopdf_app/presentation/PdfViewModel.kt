@@ -1,5 +1,6 @@
 package com.example.imagetopdf_app.presentation
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.runtime.getValue
@@ -10,24 +11,24 @@ import com.example.imagetopdf_app.domain.repository.ImageToPdfRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+
 @HiltViewModel
 class PdfViewModel @Inject constructor(
     private val imageToPdfRepository: ImageToPdfRepository
-): ViewModel(){
+) : ViewModel() {
 
 
     var image by mutableStateOf<Bitmap?>(null)
 
-    val list = mutableListOf<Uri>()
-
+    var list by mutableStateOf<List<Uri>>(emptyList())
 
     init {
-        list += imageToPdfRepository.getAllPdf()
+        updateList()
     }
 
 
-    fun onEvent(event : PdfScreenEvent){
-        when(event){
+    fun onEvent(event: PdfScreenEvent) {
+        when (event) {
             is PdfScreenEvent.ImageSelected -> {
                 val bitmap = imageToPdfRepository.convertUriToBitmap(event.uri)
                 image = bitmap
@@ -37,6 +38,10 @@ class PdfViewModel @Inject constructor(
                 imageToPdfRepository.convertImageToPdf(event.bitmap)
             }
         }
+    }
+
+    fun updateList() {
+        list = imageToPdfRepository.getAllPdf()
     }
 
 }
