@@ -1,6 +1,5 @@
 package com.example.imagetopdf_app.presentation
 
-import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.net.Uri
 import androidx.compose.runtime.getValue
@@ -19,11 +18,10 @@ class PdfViewModel @Inject constructor(
 
 
     var image by mutableStateOf<Bitmap?>(null)
-
-    var list by mutableStateOf<List<Uri>>(emptyList())
+    var mapList by mutableStateOf<Map<String, Uri>>(emptyMap())
 
     init {
-        updateList()
+        updateMapList()
     }
 
 
@@ -36,12 +34,14 @@ class PdfViewModel @Inject constructor(
 
             is PdfScreenEvent.ConvertImageToPdf -> {
                 imageToPdfRepository.convertImageToPdf(event.bitmap)
+                updateMapList()
+                image = null
             }
         }
     }
 
-    fun updateList() {
-        list = imageToPdfRepository.getAllPdf()
+    fun updateMapList() {
+        mapList = imageToPdfRepository.getAllPdfAsMap()
     }
 
 }

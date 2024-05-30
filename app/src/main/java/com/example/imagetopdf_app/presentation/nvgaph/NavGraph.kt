@@ -40,9 +40,7 @@ fun NavGraph(
                 onSelected = viewModel::onEvent,
                 onCovertClick = {
                     viewModel.onEvent(it)
-                    viewModel.updateList()
                     navController.popBackStack()
-
                 }
             )
         }
