@@ -66,7 +66,7 @@ class ImageToPdfRepositoryImpl(
         if (folder.exists()){
             val files = folder.listFiles()
             for (file in files){
-            val check = FileProvider.getUriForFile(context,"com.example.imagetopdf_app",file)
+            val check = FileProvider.getUriForFile(context,"com.example.imagetopdf_app.fileprovider",file)
                 list.add(check)
             }
         }
