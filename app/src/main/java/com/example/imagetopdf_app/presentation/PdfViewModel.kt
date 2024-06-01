@@ -18,6 +18,7 @@ class PdfViewModel @Inject constructor(
 
 
     var image by mutableStateOf<Bitmap?>(null)
+    var listImages by mutableStateOf<List<Bitmap>>(emptyList())
     var mapList by mutableStateOf<Map<String, Uri>>(emptyMap())
 
     init {
@@ -36,6 +37,17 @@ class PdfViewModel @Inject constructor(
                 imageToPdfRepository.convertImageToPdf(event.bitmap)
                 updateMapList()
                 image = null
+            }
+
+            is PdfScreenEvent.MultipleImageSelected -> {
+                val listBitmap = imageToPdfRepository.convertMultipleUriToBitmap(event.listUri)
+                listImages = listBitmap
+            }
+
+            is PdfScreenEvent.ConvertMultipleImagesToPdf -> {
+                imageToPdfRepository.convertMultipleImagesToPdf(event.listBitmap)
+                updateMapList()
+                listImages = emptyList()
             }
         }
     }

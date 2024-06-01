@@ -8,12 +8,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -40,10 +42,10 @@ fun AddPdfScreen(
 ) {
 
     val pickImage = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ) { uri ->
-        if (uri != null) {
-            onSelected(PdfScreenEvent.ImageSelected(uri))
+        contract = ActivityResultContracts.GetMultipleContents()
+    ) { listUri ->
+        if (listUri.isNotEmpty()) {
+            onSelected(PdfScreenEvent.MultipleImageSelected(listUri))
         } else {
             Log.d("pokemon", "User didn't selected any Image")
         }
@@ -87,27 +89,36 @@ fun AddPdfScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            viewModel.image?.let { image ->
-                Image(
-                    bitmap = image.asImageBitmap(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Fit,
+
+            if (viewModel.listImages.isNotEmpty()) {
+
+
+                LazyRow(
                     modifier = Modifier
-                        .size(300.dp)
-                        .background(Color.DarkGray)
-                )
-                Spacer(modifier = Modifier.height(20.dp))
+                        .fillMaxWidth()
+                ){
+                    items(viewModel.listImages){
+                        Image(
+                            bitmap = it.asImageBitmap(),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .height(200.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
+                }
+
                 Button(
                     onClick = {
-                        onCovertClick(PdfScreenEvent.ConvertImageToPdf(image))
+                        onCovertClick(PdfScreenEvent.ConvertMultipleImagesToPdf(viewModel.listImages))
                     },
                     shape = RectangleShape,
                 ) {
                     Text(text = "Convert")
 
                 }
-            }
 
+            }
         }
     }
 
