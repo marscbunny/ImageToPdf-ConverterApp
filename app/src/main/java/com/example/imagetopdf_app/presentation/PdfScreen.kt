@@ -106,6 +106,7 @@ private fun openPdfIntent(context: Context, uri: Uri) {
     val intent = Intent()
     intent.action = Intent.ACTION_VIEW
     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
     intent.setDataAndType(uri, "application/pdf")
 
     if (intent.resolveActivity(context.packageManager) != null) {

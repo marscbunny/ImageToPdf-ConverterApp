@@ -57,6 +57,29 @@ class ImageToPdfRepositoryImpl(
 
     }
 
+    override fun convertMultipleImagesToPdf(list: List<Bitmap>) {
+        val docsFolder = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString())
+        if (!docsFolder.exists()){
+            docsFolder.mkdir()
+        }
+        val timeInMills = System.currentTimeMillis()
+        val file = File(docsFolder.absoluteFile,"$timeInMills.pdf")
+        val pdfDocument = PdfDocument()
+        list.forEach { bitmap ->
+            val pageInfo = PdfDocument.PageInfo.Builder(bitmap.width,bitmap.height,list.indexOf(bitmap) + 1).create()
+            val page = pdfDocument.startPage(pageInfo)
+            val canvas = page.canvas
+
+            val paint = Paint()
+            canvas.drawBitmap(bitmap,0f,0f,paint)
+            pdfDocument.finishPage(page)
+            pdfDocument.writeTo(FileOutputStream(file))
+            pdfDocument.close()
+
+            Toast.makeText(context, "pdf created successfully", Toast.LENGTH_LONG).show()
+        }
+    }
+
 
     override fun getAllPdfAsMap() : Map<String,Uri>{
         val folder = File(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).toString())

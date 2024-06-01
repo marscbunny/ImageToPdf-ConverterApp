@@ -9,6 +9,7 @@ interface ImageToPdfRepository{
     fun convertUriToBitmap(uri : Uri) : Bitmap?
 
     fun convertImageToPdf(bitmap: Bitmap)
+    fun convertMultipleImagesToPdf(list : List<Bitmap>)
 
     fun getAllPdfAsMap() : Map<String,Uri>
 
